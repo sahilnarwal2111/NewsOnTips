@@ -1,48 +1,36 @@
 import './App.css';
-import React, { useState } from 'react';
-import { Routes ,Route } from 'react-router-dom';
-import { BrowserRouter as Router, Switch, Link } from 'react-router-dom'; // Importing Link and Switch
-import NavBar from './NavBar'; // Assuming you have a NavBar component
-// import LoadingBar from './LoadingBar'; // Assuming you have a LoadingBar component
-import News from './News'; // Assuming you have a News component
-
-
-
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
+import NavBar from './NavBar';
+import News from './News';
 
 const Home = () => {
   const pageSize = 5;
   const apiKey = "f21bb4007a6e40cabd3fab47ddb30bd9"
   const [progress, setProgress] = useState(0)
+  const currentPage = 1
+  const [showLoginSuccess, setShowLoginSuccess] = useState(true);
+
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowLoginSuccess(false);
+    }, 5000); 
+
+    return () => clearTimeout(timeout);
+  }, []); 
 
   return (
     <div>
-    <div style={{ backgroundImage: "linear-gradient(#001726, #003266, rgba(12, 0, 86, 0.555))" }} className="d-flex flex-column justify-content-center align-items-center text-center vh-100">
-      <h1>Login Success Page</h1>
-      <Link to='/login' className="btn btn-light my-5">Logout</Link>
-    </div>
-
-    <Router>
+    {showLoginSuccess && (
+        <div className="alert alert-success" role="alert">
+          Login Successfull
+          <Link to='/login' className="btn btn-light">Logout</Link>
+        </div>
+      )}
       <NavBar />
-      <LoadingBar
-        height={3}
-        color='#f11946'
-        progress={progress}
-      />
-      <Switch>
-        <Route exact path="/"><News setProgress={setProgress} apiKey={apiKey} key="general" pageSize={pageSize} country="in" category="general" /></Route>
-        <Route exact path="/business"><News setProgress={setProgress} apiKey={apiKey} key="business" pageSize={pageSize} country="in" category="business" /></Route>
-        <Route exact path="/entertainment"><News setProgress={setProgress} apiKey={apiKey} key="entertainment" pageSize={pageSize} country="in" category="entertainment" /></Route>
-        <Route exact path="/general"><News setProgress={setProgress} apiKey={apiKey} key="general" pageSize={pageSize} country="in" category="general" /></Route>
-        <Route exact path="/health"><News setProgress={setProgress} apiKey={apiKey} key="health" pageSize={pageSize} country="in" category="health" /></Route>
-        <Route exact path="/science"><News setProgress={setProgress} apiKey={apiKey} key="science" pageSize={pageSize} country="in" category="science" /></Route>
-        <Route exact path="/sports"><News setProgress={setProgress} apiKey={apiKey} key="sports" pageSize={pageSize} country="in" category="sports" /></Route>
-        <Route exact path="/technology"><News setProgress={setProgress} apiKey={apiKey} key="technology" pageSize={pageSize} country="in" category="technology" /></Route>
-      </Switch>
-    </Router>
+      <News setProgress={setProgress} apiKey={apiKey} key={currentPage} pageSize={pageSize} country="in"/>
   </div>
-
-
   );
 }
-
 export default Home
