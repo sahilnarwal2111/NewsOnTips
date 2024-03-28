@@ -1,13 +1,36 @@
-// import React from 'react';
-import { Link } from "react-router-dom";
+import './App.css';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
+import NavBar from './NavBar';
+import News from './News';
 
 const Home = () => {
-  return (
-    <div style= {{backgroundImage : "linear-gradient(#001726, #003266, rgba(12, 0, 86, 0.555))"}} className="d-flex flex-column justify-content-center align-items-center text-center vh-100">
-        <h1>Login Success Page</h1>
-        <Link to='/login' className="btn btn-light my-5">Logout</Link>
-    </div>
-  )
-}
+  const pageSize = 5;
+  const apiKey = "f21bb4007a6e40cabd3fab47ddb30bd9"
+  const [progress, setProgress] = useState(0)
+  const currentPage = 1
+  const [showLoginSuccess, setShowLoginSuccess] = useState(true);
 
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowLoginSuccess(false);
+    }, 5000); 
+
+    return () => clearTimeout(timeout);
+  }, []); 
+
+  return (
+    <div>
+    {showLoginSuccess && (
+        <div className="alert alert-success" role="alert">
+          Login Successfull
+          <Link to='/login' className="btn btn-light">Logout</Link>
+        </div>
+      )}
+      <NavBar />
+      <News setProgress={setProgress} apiKey={apiKey} key={currentPage} pageSize={pageSize} country="in"/>
+  </div>
+  );
+}
 export default Home
