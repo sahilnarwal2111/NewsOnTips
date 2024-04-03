@@ -1,9 +1,11 @@
+
 import React, {useEffect, useState} from 'react'
 
 import NewsItem from './NewsItem'
 import Spinner from './Spinner';
 import PropTypes from 'prop-types'
-import InfiniteScroll from "react-infinite-scroll-component";
+//import InfiniteScroll from "react-infinite-scroll-component";
+
 
 const News = (props)=>{
     const [articles, setArticles] = useState([])
@@ -25,7 +27,7 @@ const News = (props)=>{
         let data = await fetch(url);
         props.setProgress(30);
         console.log(data)
-	let parsedData = await data.json()
+	    let parsedData = await data.json()
         props.setProgress(70);
         setArticles(parsedData.articles)
         setTotalResults(parsedData.totalResults)
