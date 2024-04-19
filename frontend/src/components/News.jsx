@@ -17,23 +17,63 @@ const News = (props)=>{
         return string.charAt(0).toUpperCase() + string.slice(1);
     } 
 
-    const updateNews = async ()=> {
-        props.setProgress(10);
-        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`; 
-        // const url = "https://saurav.tech/NewsAPI/top-headlines/category/health/in.json"
-	    //    const url = `https://saurav.tech/NewsAPI/top-headlines/category/${props.category}/in.json`
+    // const updateNews = async ()=> {
+    //     props.setProgress(10);
+    //     const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`; 
+    //     // const url = "https://saurav.tech/NewsAPI/top-headlines/category/health/in.json"
+	//     // const url = `https://saurav.tech/NewsAPI/top-headlines/category/${props.category}/in.json`
 
-	    setLoading(true)
-        let data = await fetch(url);
-        props.setProgress(30);
-        console.log(data)
-	    let parsedData = await data.json()
-        props.setProgress(70);
-        setArticles(parsedData.articles)
-        setTotalResults(parsedData.totalResults)
-        setLoading(false)
-        props.setProgress(100);
-    }
+	//     setLoading(true)
+    //     let data = await fetch(url);
+    //     props.setProgress(30);
+    //     console.log(data)
+	//     let parsedData = await data.json()
+    //     props.setProgress(70);
+    //     setArticles(parsedData.articles)
+    //     setTotalResults(parsedData.totalResults)
+    //     setLoading(false)
+    //     props.setProgress(100);
+    // }
+    const updateNews = async () => {
+        props.setProgress(10);
+        
+        // Construct the URL for your Express application
+        const expressUrl = `http://localhost:3000/news/${props.category}?page=${page}&pageSize=${props.pageSize}&country=${props.country}`;
+        
+        setLoading(true);
+      
+        try {
+          // Send a GET request to your Express application
+          let response = await fetch(expressUrl);
+      
+          // Check if the request was successful (status code 200)
+          if (response.ok) {
+            props.setProgress(30);
+            
+            // Parse the response data
+            let parsedData = await response.json();
+      
+            props.setProgress(70);
+            
+            // Update state with the fetched articles and total results
+            setArticles(parsedData.articles);
+            setTotalResults(parsedData.totalResults);
+      
+            props.setProgress(100);
+          } else {
+            throw new Error('Failed to fetch news');
+          }
+        } catch (error) {
+          console.error('Error fetching news:', error.message);
+          // Handle errors, such as displaying an error message to the user
+        } finally {
+          setLoading(false);
+        }
+      };
+      
+
+
+
 
     useEffect(() => {
         document.title = `NewsOnTips - ${capitalizeFirstLetter(props.category)}`;
@@ -42,17 +82,40 @@ const News = (props)=>{
     }, [])
 
 
-    const fetchMoreData = async () => {   
-       const url = `https://newsapirg/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;
-    //    const url = "https://saurav.tech/NewsAPI/top-headlines/category/health/in.json"
-	        // const url = `https://saurav.tech/NewsAPI/top-headlines/category/${props.category}/in.json`
+    // const fetchMoreData = async () => {   
+    //    const url = `https://newsapirg/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;
+    // //    const url = "https://saurav.tech/NewsAPI/top-headlines/category/health/in.json"
+	//         // const url = `https://saurav.tech/NewsAPI/top-headlines/category/${props.category}/in.json`
 
-	    setPage(page+1) 
-        let data = await fetch(url);
-        let parsedData = await data.json()
-        setArticles(articles.concat(parsedData.articles))
-        setTotalResults(parsedData.totalResults)
+	//     setPage(page+1) 
+    //     let data = await fetch(url);
+    //     let parsedData = await data.json()
+    //     setArticles(articles.concat(parsedData.articles))
+    //     setTotalResults(parsedData.totalResults)
+    //   };
+
+    const fetchMoreData = async () => {
+        const expressUrl = `http://localhost:3000/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+      
+        setPage(page + 1);
+      
+        try {
+          const response = await fetch(expressUrl);
+          
+          if (response.ok) {
+            const parsedData = await response.json();
+            
+            setArticles(articles.concat(parsedData.articles));
+            setTotalResults(parsedData.totalResults);
+          } else {
+            throw new Error('Failed to fetch more data');
+          }
+        } catch (error) {
+          console.error('Error fetching more data:', error.message);
+          // Handle errors, such as displaying an error message to the user
+        }
       };
+      
  
         return (
             <>
