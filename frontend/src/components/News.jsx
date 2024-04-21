@@ -5,7 +5,7 @@ import NewsItem from './NewsItem'
 import Spinner from './Spinner';
 import PropTypes from 'prop-types'
 import InfiniteScroll from "react-infinite-scroll-component";
-
+import NavBar from './NavBar';
 
 const News = (props)=>{
     const [articles, setArticles] = useState([])
@@ -36,9 +36,29 @@ const News = (props)=>{
     // }
     const updateNews = async () => {
         props.setProgress(10);
-        
-        // Construct the URL for your Express application
-        const expressUrl = `http://localhost:3000/news/${props.category}?page=${page}&pageSize=${props.pageSize}&country=${props.country}`;
+        // let expressUrl = '';
+        let expressUrl = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`; 
+        if(props.category == 'business'){
+            expressUrl = `http://localhost:3010/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
+        else if(props.category == 'enterainment'){
+          expressUrl = `http://localhost:3011/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
+        else if(props.category == 'general'){
+          expressUrl = `http://localhost:3016/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
+        else if(props.category == 'health'){
+          expressUrl = `http://localhost:3012/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
+        else if(props.category == 'science'){
+          expressUrl = `http://localhost:3013/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
+        else if(props.category == 'sports'){
+          expressUrl = `http://localhost:3014/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
+        else if(props.category == 'technology'){
+          expressUrl = `http://localhost:3015/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
         
         setLoading(true);
       
@@ -95,8 +115,31 @@ const News = (props)=>{
     //   };
 
     const fetchMoreData = async () => {
-        const expressUrl = `http://localhost:3000/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
-      
+
+        // const expressUrl = `http://localhost:3000/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        let expressUrl = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`; 
+        if(props.category == 'business'){
+            expressUrl = `http://localhost:3010/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
+        else if(props.category == 'enterainment'){
+          expressUrl = `http://localhost:3011/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
+        else if(props.category == 'general'){
+          expressUrl = `http://localhost:3016/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
+        else if(props.category == 'health'){
+          expressUrl = `http://localhost:3012/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
+        else if(props.category == 'science'){
+          expressUrl = `http://localhost:3013/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
+        else if(props.category == 'sports'){
+          expressUrl = `http://localhost:3014/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
+        else if(props.category == 'technology'){
+          expressUrl = `http://localhost:3015/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
+        
         setPage(page + 1);
       
         try {
@@ -119,6 +162,7 @@ const News = (props)=>{
  
         return (
             <>
+              <NavBar/>
                 <h1 className="text-center" style={{ margin: '35px 0px', marginTop: '90px' }}>NewsOnTips - Top {capitalizeFirstLetter(props.category)} Headlines.</h1>
                 {loading && <Spinner />}
                 <InfiniteScroll
