@@ -59,6 +59,9 @@ const News = (props)=>{
         else if(props.category == 'technology'){
           expressUrl = `http://localhost:3015/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
         }
+        else if(props.category == 'newsForYou'){
+          expressUrl = `http://localhost:3020/news/${props.category}`;
+        }
         
         setLoading(true);
       
@@ -138,6 +141,9 @@ const News = (props)=>{
         }
         else if(props.category == 'technology'){
           expressUrl = `http://localhost:3015/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
+        }
+        else if(props.category == 'newsForYou'){
+          expressUrl = `http://localhost:3020/news/${props.category}`;
         }
         
         setPage(page + 1);
