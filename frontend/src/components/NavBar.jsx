@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link } from "react-router-dom";
+import { useUser } from './UserContext';
 
 const NavBar = () => {
-
+    const { userEmail } = useUser();
     return (
         <div>
             <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
@@ -25,6 +26,12 @@ const NavBar = () => {
                             <li className="nav-item"><Link className="nav-link" to="/sports">Sports</Link></li>
                             <li className="nav-item"><Link className="nav-link" to="/technology">Technology</Link></li>
                         </ul>
+                        {userEmail && (
+                            <div className="d-flex">
+                                <span className="navbar-text me-3">{userEmail}</span>
+                                {/* Add logout button or other user options if needed */}
+                            </div>
+                        )}
                     </div>
                 </div>
             </nav>
