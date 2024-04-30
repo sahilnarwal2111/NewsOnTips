@@ -16,7 +16,7 @@ with open('news.json', 'r') as file:
     
     articles_full = json_data['articles']
 
-print(type(articles_full))
+# print(type(articles_full))
 # print(len(articles_full))
 
 # for article in articles_full:
@@ -24,7 +24,30 @@ print(type(articles_full))
 #     print('\n')
 
 modifiedList = []
-sentence = "I am Sahil , i live in New Zealand"
+
+
+# we need to get sentence from mongo db
+file_path = "server/email.txt"
+def read_file(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            file_content = file.read()
+        return file_content
+    except FileNotFoundError:
+        print(f"File '{file_path}' not found.")
+        return None
+    except Exception as e:
+        print(f"Error reading file '{file_path}': {e}")
+        return None
+
+
+email = read_file(file_path)
+print(email)
+# sentence = "I am Sahil , i live in New Zealand"
+
+
+
+
 def preprocess_text(text):
     # Tokenization
     tokens = word_tokenize(text.lower())
@@ -51,23 +74,23 @@ def sentence_similarity(sentence1, sentence2):
     return combined_similarity
 
 
-for article in articles_full:
-    new_article = article.copy()
-    # new_article['lemmitized_title'] = preprocess_text(new_article['title'])
-    new_article['similarity'] = sentence_similarity(new_article['title'], sentence)
-    modifiedList.append(new_article)
+# for article in articles_full:
+#     new_article = article.copy()
+#     # new_article['lemmitized_title'] = preprocess_text(new_article['title'])
+#     new_article['similarity'] = sentence_similarity(new_article['title'], sentence)
+#     modifiedList.append(new_article)
 
-# for new_article in modifiedList:
-#     print(new_article['similarity'] )
-#     print('\n')
+# # for new_article in modifiedList:
+# #     print(new_article['similarity'] )
+# #     print('\n')
 
-sorted_list = sorted(modifiedList, key=lambda x: x['similarity'], reverse=True)
+# sorted_list = sorted(modifiedList, key=lambda x: x['similarity'], reverse=True)
 
-for new_article in sorted_list:
-    print(new_article['title'] + " " + str(new_article['similarity']))
+# for new_article in sorted_list:
+#     print(new_article['title'] + " " + str(new_article['similarity']))
 
-output_dict = {"articles": sorted_list}
+# output_dict = {"articles": sorted_list}
 
-# Save the output dictionary to a file named "output.txt"
-with open('output.txt', 'w') as output_file:
-    json.dump(output_dict, output_file)
+# # Save the output dictionary to a file named "output.txt"
+# with open('output.txt', 'w') as output_file:
+#     json.dump(output_dict, output_file)

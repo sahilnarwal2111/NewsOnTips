@@ -6,13 +6,14 @@ import Spinner from './Spinner';
 import PropTypes from 'prop-types'
 import InfiniteScroll from "react-infinite-scroll-component";
 import NavBar from './NavBar';
+import { useUser } from './UserContext'; 
 
 const News = (props)=>{
     const [articles, setArticles] = useState([])
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [totalResults, setTotalResults] = useState(0)
-    
+    const { userEmail } = useUser();
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     } 
@@ -34,9 +35,10 @@ const News = (props)=>{
     //     setLoading(false)
     //     props.setProgress(100);
     // }
-    const updateNews = async () => {
+    const updateNews = async (userEmail) => {
         props.setProgress(10);
         // let expressUrl = '';
+        // const { userEmail } = useUser();
         let expressUrl = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`; 
         if(props.category == 'business'){
             expressUrl = `http://localhost:3010/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
@@ -60,7 +62,9 @@ const News = (props)=>{
           expressUrl = `http://localhost:3015/news/${props.category}?page=${page + 1}&pageSize=${props.pageSize}&country=${props.country}`;
         }
         else if(props.category == 'newsForYou'){
-          expressUrl = `http://localhost:3020/news/${props.category}`;
+          console.log(userEmail)
+          expressUrl = `http://localhost:3020/news/${props.category}?userEmail=${userEmail}`;
+          // expressUrl = `http://localhost:3020/news/your-category`;
         }
         
         setLoading(true);
@@ -100,9 +104,9 @@ const News = (props)=>{
 
     useEffect(() => {
         document.title = `NewsOnTips - ${capitalizeFirstLetter(props.category)}`;
-        updateNews(); 
+        updateNews(userEmail); 
         // eslint-disable-next-line
-    }, [])
+    }, [userEmail])
 
 
     // const fetchMoreData = async () => {   
