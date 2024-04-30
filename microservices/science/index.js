@@ -18,11 +18,9 @@ app.get('/news/:category', async (req, res) => {
     const category = req.params.category;
     const { page, pageSize, country } = req.query;
 
-    // Make a request to the News API using axios
+    console.log(category)
     const newsUrl = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${apiKey}&page=${page}&pageSize=${pageSize}`;
     const response = await axios.get(newsUrl);
-
-    // Send the response data back to the client
     res.json(response.data);
   } catch (error) {
     // Handle errors

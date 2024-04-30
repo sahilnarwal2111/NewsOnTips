@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "esbuild": "^0.20.2",
+    "fs": "^0.0.1-security",
+    "mongoose": "^8.3.3",
     "react-router-dom": "^6.22.3"
   }
 }
