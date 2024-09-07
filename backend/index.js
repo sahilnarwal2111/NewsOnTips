@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect('mongodb+srv://ranaaryansh12:jXGKXC6kVXMuzkqW@cluster0.kln2bnp.mongodb.net/');
+mongoose.connect('mongodb+srv://sahilnarwalkumar01:NKAt7FJDy3gxccWc@cluster0.f42f14w.mongodb.net/');
 
 app.post('/register', (req, res)=>{
     // To post / insert data into database
@@ -16,7 +16,7 @@ app.post('/register', (req, res)=>{
     const {email, password} = req.body;
     FormDataModel.findOne({email: email})
     .then(user => {
-        if(user){
+        if(user){ 
             res.json("Already registered")
         }
         else{
